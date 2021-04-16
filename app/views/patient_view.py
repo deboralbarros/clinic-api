@@ -8,7 +8,7 @@ from app.serializers.patient_serializer import PatientSerializer
 
 bp_patient = Blueprint('bp_patient', __name__, url_prefix='/patients')
 
-@bp_patient.route('/', methods=['POST'])
+@bp_patient.route('', methods=['POST'])
 def create_patient():
     session = current_app.db.session
     body = request.get_json()
@@ -35,7 +35,7 @@ def create_patient():
     }, HTTPStatus.CREATED
 
 
-@bp_patient.route('/login/', methods=['POST'])
+@bp_patient.route('/login', methods=['POST'])
 def login():
     body = request.get_json()
 

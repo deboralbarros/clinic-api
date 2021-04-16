@@ -7,7 +7,7 @@ from app.serializers.speciality_serializer import SpecialitySerializer
 bp_speciality = Blueprint('bp_speciality', __name__, url_prefix='/specialities')
 
 
-@bp_speciality.route('/', methods=['POST'])
+@bp_speciality.route('', methods=['POST'])
 def create_speciality():
     session = current_app.db.session
     body = request.get_json()
@@ -27,7 +27,7 @@ def create_speciality():
     return serialized, HTTPStatus.CREATED
 
 
-@bp_speciality.route('/')
+@bp_speciality.route('')
 def get_all_specialities():
     speciality_name = request.args.get('speciality')
 

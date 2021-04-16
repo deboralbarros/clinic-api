@@ -11,7 +11,7 @@ from app.serializers.speciality_serializer import SpecialitySerializer
 bp_doctor = Blueprint('bp_doctor', __name__, url_prefix='/doctors')
 
 
-@bp_doctor.route('/', methods=['POST'])
+@bp_doctor.route('', methods=['POST'])
 def create_doctor():
     session = current_app.db.session
     body = request.get_json()
@@ -48,7 +48,7 @@ def create_doctor():
     }, HTTPStatus.CREATED
 
 
-@bp_doctor.route('/login/', methods=['POST'])
+@bp_doctor.route('/login', methods=['POST'])
 def login():
     body = request.get_json()
 
@@ -66,7 +66,7 @@ def login():
     }, HTTPStatus.OK
 
 
-@bp_doctor.route('/')
+@bp_doctor.route('')
 def get_all_doctors():
     all_doctors = DoctorModel.query.all()
 
@@ -75,7 +75,7 @@ def get_all_doctors():
     return jsonify(serialized), HTTPStatus.OK
 
 
-@bp_doctor.route('/<string:doctor_id>')
+@bp_doctor.route('/<doctor_id>')
 def get_doctor_by_id(doctor_id):
     try:
         found_doctor = DoctorModel.query.get(doctor_id)

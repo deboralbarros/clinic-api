@@ -59,6 +59,11 @@ def update_status(consultation_id):
         if doctor_id != str(found_consultation.doctor_id):
             return {'message': 'Not authorized'}, HTTPStatus.FORBIDDEN
 
+        status_list = ['Waiting for confirmation of the doctor', 'Confirmed', '']
+
+        if not body['new_status'] in status_list:
+            return {'message': 'This status is not allowed'}, HTTPStatus.BAD_REQUEST
+
         found_consultation.status = body['new_status']
 
         session.add(found_consultation)
