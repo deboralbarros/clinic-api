@@ -9,3 +9,5 @@ def init_app(app: Flask):
     app.db = db
 
     from app.models.patient_model import PatientModel
+    from app.models.doctor_model import DoctorModel
+    from app.models.speciality_model import SpecialityModel
