@@ -1,4 +1,4 @@
-from flask import Blueprint, request, current_app
+from flask import Blueprint, request, current_app, jsonify
 from http import HTTPStatus
 from flask_jwt_extended import decode_token, create_access_token, create_refresh_token
 from datetime import timedelta
@@ -9,6 +9,7 @@ from app.serializers.doctor_serializer import DoctorSerializer
 from app.serializers.speciality_serializer import SpecialitySerializer
 
 bp_doctor = Blueprint('bp_doctor', __name__, url_prefix='/doctors')
+
 
 @bp_doctor.route('/', methods=['POST'])
 def create_doctor():
@@ -29,7 +30,6 @@ def create_doctor():
 
     return {
         'doctor': serialized,
-        # 'speciality': SpecialitySerializer(only=('id', 'name',)).dump(new_doctor.speciality),
         'access_token': access_token,
         'fresh_token': fresh_token
     }, HTTPStatus.CREATED
@@ -51,3 +51,12 @@ def login():
         'access_token': access_token,
         'fresh_token': fresh_token
     }, HTTPStatus.OK
+
+
+@bp_doctor.route('/')
+def get_all_doctors():
+    all_doctors = DoctorModel.query.all()
+
+    serialized = DoctorSerializer(many=True).dump(all_doctors)
+
+    return jsonify(serialized), HTTPStatus.OK

@@ -24,7 +24,12 @@ def create_speciality():
 
 @bp_speciality.route('/')
 def get_all_specialities():
-    all_specialities = SpecialityModel.query.all()
+    speciality_name = request.args.get('speciality')
+
+    if speciality_name:
+        all_specialities = SpecialityModel.query.filter(SpecialityModel.name.like(speciality_name))
+    else:
+        all_specialities = SpecialityModel.query.all()
 
     serialized = SpecialitySerializer(many=True).dump(all_specialities)
 
