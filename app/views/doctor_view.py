@@ -16,9 +16,22 @@ def create_doctor():
     session = current_app.db.session
     body = request.get_json()
 
-    found_speciality: SpecialityModel = SpecialityModel.query.get(body['speciality_id'])
+    doctor_already_exists = DoctorModel.query.filter_by(email=body['email']).first()
 
-    new_doctor = DoctorModel(**body)
+    if doctor_already_exists:
+        return {'message': 'Doctor already exists'}, HTTPStatus.BAD_REQUEST
+
+    found_speciality: SpecialityModel = SpecialityModel.query.filter_by(name=body['speciality_name']).first()
+
+    if not found_speciality:
+        return {'message': 'Speciality does not exists'}, HTTPStatus.BAD_GATEWAY
+
+    new_doctor = DoctorModel(
+        name=body['name'],
+        email=body['email'],
+        password=body['password'],
+        speciality_id=found_speciality.id
+    )
 
     session.add(new_doctor)
     session.commit()
@@ -60,3 +73,15 @@ def get_all_doctors():
     serialized = DoctorSerializer(many=True).dump(all_doctors)
 
     return jsonify(serialized), HTTPStatus.OK
+
+
+@bp_doctor.route('/<string:doctor_id>')
+def get_doctor_by_id(doctor_id):
+    try:
+        found_doctor = DoctorModel.query.get(doctor_id)
+        serialized = DoctorSerializer().dump(found_doctor)
+
+        return serialized, HTTPStatus.OK
+
+    except:
+        return {'message': 'Doctor not found'}, HTTPStatus.NOT_FOUND
