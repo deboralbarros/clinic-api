@@ -10,3 +10,6 @@ def init_app(app: Flask):
 
     from app.views.specialities_view import bp_speciality
     app.register_blueprint(bp_speciality)
+
+    from app.views.consultation_view import bp_consultation
+    app.register_blueprint(bp_consultation)

@@ -12,6 +12,11 @@ def create_speciality():
     session = current_app.db.session
     body = request.get_json()
 
+    found_speciality = SpecialityModel.query.filter(SpecialityModel.name.like(f"%{body['name']}%")).first()
+
+    if found_speciality:
+        return {'message': 'Speciality already exists'}, HTTPStatus.BAD_REQUEST
+
     new_speciality = SpecialityModel(**body)
 
     session.add(new_speciality)

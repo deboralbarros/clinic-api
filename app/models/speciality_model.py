@@ -9,4 +9,4 @@ class SpecialityModel(db.Model):
     __tablename__ = 'specialities'
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    name = Column(String(), nullable=False)
+    name = Column(String(), nullable=False, unique=True)

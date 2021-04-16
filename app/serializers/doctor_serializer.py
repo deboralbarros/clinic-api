@@ -1,5 +1,5 @@
 from app.models.doctor_model import DoctorModel
-from marshmallow.fields import Nested
+from marshmallow.fields import Nested, List
 from . import ma
 
 class DoctorSerializer(ma.SQLAlchemyAutoSchema):
@@ -12,3 +12,4 @@ class DoctorSerializer(ma.SQLAlchemyAutoSchema):
     email = ma.auto_field()
 
     speciality = Nested('SpecialitySerializer', exclude=['doctors_list'])
+    consultation_list = List(Nested('ConsultationSerializer', exclude=['doctor']))

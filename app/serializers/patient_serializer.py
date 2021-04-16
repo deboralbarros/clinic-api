@@ -1,4 +1,5 @@
 from app.models.patient_model import PatientModel
+from marshmallow.fields import List, Nested
 from . import ma
 
 
@@ -13,3 +14,5 @@ class PatientSerializer(ma.SQLAlchemyAutoSchema):
     age = ma.auto_field()
     weight = ma.auto_field()
     height = ma.auto_field()
+
+    consultation_list = List(Nested('ConsultationSerializer', exclude=['patient']))
