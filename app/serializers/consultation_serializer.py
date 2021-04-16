@@ -8,6 +8,8 @@ class ConsultationSerializer(ma.SQLAlchemyAutoSchema):
 
     id = ma.auto_field()
     date = ma.auto_field()
+    details = ma.auto_field()
+    status = ma.auto_field()
 
     doctor = Nested('DoctorSerializer', exclude=['consultation_list'])
     patient = Nested('PatientSerializer', exclude=['consultation_list'])
