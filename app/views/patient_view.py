@@ -13,6 +13,11 @@ def create_patient():
     session = current_app.db.session
     body = request.get_json()
 
+    found_patient = PatientModel.query.filter_by(email=body['email']).first()
+
+    if found_patient:
+        return {'message': 'Patient already exists'}, HTTPStatus.BAD_GATEWAY
+
     new_patient = PatientModel(**body)
 
     session.add(new_patient)
